@@ -5,13 +5,13 @@ _This projects aims to train a machine learning model to analyse the sentiments 
 Our goal was to analyse the sentiments expressed in Amazon reviews and classify them as positive or negative. We leveraged machine learning techniques to build a sentiment analysis model that can automatically classify a given text input based on its sentiment. 
 Specifically, **we used _Long Short-Term Memory (LSTM)_ networks within a _Bi-directional architecture_, powered by _pretrained word embeddings_ and train/test it on the dataset found here**: https://www.cs.jhu.edu/~mdredze/datasets/sentiment/index2.html 
 The following steps were taken:
--Data preparation: The data was loaded, cleaned and labelled and split to training and testing data. 
-*Data exploration: Data metrics are extracted and visualised to facilitate better model tuning in subsequent steps.
-*Vocabulary construction: A vocabulary set is created from the data.
-*Sentence encoding and padding: The Data is encoded and padded for uniformity. 
-*Label preparation: Label data is also reformated for better model compliance.
-*Model fitting: The model is prepared, build, compiled and trained.
-*Custom prediction: A function is provided to perform sentiment analysis on an text input.
+- Data preparation: The data was loaded, cleaned and labelled and split to training and testing data. 
+- Data exploration: Data metrics are extracted and visualised to facilitate better model tuning in subsequent steps.
+- Vocabulary construction: A vocabulary set is created from the data.
+- Sentence encoding and padding: The Data is encoded and padded for uniformity. 
+- Label preparation: Label data is also reformated for better model compliance.
+- Model fitting: The model is prepared, build, compiled and trained.
+- Custom prediction: A function is provided to perform sentiment analysis on an text input.
 
 
 ##	Code analysis:
@@ -154,9 +154,9 @@ plt.show()
 ### 4) Vocabulary construction
 
 Vocabulary building: A vocabulary set is created from the training data, containing all unique words. A special placeholder ('') is added for padding and unknown words to ensure uniformity during model input.
-	Mappings: Two dictionaries are generated:
-		-word_to_id: Maps each word to a unique numerical ID.
-		-id_to_word: Maps numerical IDs back to their corresponding words. These mappings are essential for encoding and decoding text during processing and inference.
+- Mappings: Two dictionaries are generated:
+	- word_to_id: Maps each word to a unique numerical ID.
+  	- id_to_word: Maps numerical IDs back to their corresponding words. These mappings are essential for encoding and decoding text during processing and inference.
 ```
 # Build vocabulary from training data
 vocab = set(word for sentence in x_train for word in sentence)
@@ -213,6 +213,9 @@ print("Test labels shape:", y_test.shape)
 Load Pretrained Model: The GloVe 200-dimensional embeddings are either downloaded or loaded from local storage. These embeddings provide pretrained vector representations for words, capturing semantic relationships.
 Embedding Matrix: An embedding matrix is created to map each word in the vocabulary to its GloVe vector. For words not in the GloVe model, the matrix is filled with zeros. This matrix serves as the weight for the embedding layer in the LSTM model.
 
+> [!NOTE]  
+> Initially the GloVe model was called for each run, but on subsequent code versions we cached it locally to increase speed.
+
 ```
 # Load GloVe model (Twitter 200-dimensional embeddings)
 word2vec_model_path = "glove-twitter-200.model"
@@ -247,6 +250,10 @@ LSTM Model Construction:
   Dropout layers are included to reduce overfitting.
   A dense output layer with a sigmoid activation function is used for binary sentiment classification.
 Compilation: The model is compiled using the Adam optimizer with a learning rate of 0.0001. Binary cross-entropy is chosen as the loss function, suitable for binary classification tasks. Accuracy is set as the evaluation metric.
+
+> [!TIP]
+>Hyperparameter tuning can greatly affect the model performance. The final methods and values selected below resulted from comparing the model accuracy and also considering the execution time each time.
+
 ```
 # Clear any previous session to avoid memory issues
 tf.keras.backend.clear_session()
