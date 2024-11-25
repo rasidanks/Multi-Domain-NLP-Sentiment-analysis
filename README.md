@@ -15,7 +15,7 @@ The following steps were taken:
 
 
 ##	Code analysis:
-Listed below are parts of the code used with a brief explanation of it's function, along with any improvements done and/or challenges faced. Comments are also included inline to achieve best readability and follow best coding practices.
+We will present parts of the code used with a brief explanation of it's function, along with any improvements done and/or challenges faced. Comments are also included inline to achieve best readability and follow best coding practices.
 
 ### 1) Importing libraries
 Listed below is a list of the libraries/modules/packages used with a brief explanation of their function.
@@ -135,8 +135,7 @@ def process_data(folders, path, label):
 
 ### 3) Data exploration
 
--Sentence length analysis: The length of each training sentence is calculated and sorted to understand the distribution of sentence lengths. Key metrics, such as the maximum, minimum, and top 20 longest sentences, are displayed.
--Visualization: A histogram of sentence lengths is plotted to provide a visual representation of sentence length frequency, offering insights into data variability and guiding padding decisions for model training.
+The length of each training sentence is calculated and sorted to understand the distribution of sentence lengths. Key metrics, such as the maximum, minimum, and top 20 longest sentences, are displayed. Also a histogram of sentence lengths is plotted to provide a visual representation of sentence length frequency, giving information about data variability to help with padding decisions for model training.
 ```
 # Calculate sentence lengths for the training data
 sentence_lengths = [len(sentence) for sentence in x_train]
@@ -156,7 +155,7 @@ plt.show()
 
 ### 4) Vocabulary construction
 
-Vocabulary building: A vocabulary set is created from the training data, containing all unique words. A special placeholder ('') is added for padding and unknown words to ensure uniformity during model input.
+A vocabulary set is created from the training data, containing all unique words. A special placeholder ('') is added for padding and unknown words to ensure uniformity during model input.
 - Mappings: Two dictionaries are generated:
 	- word_to_id: Maps each word to a unique numerical ID.
   	- id_to_word: Maps numerical IDs back to their corresponding words. These mappings are essential for encoding and decoding text during processing and inference.
@@ -174,8 +173,7 @@ id_to_word = {idx: word for idx, word in enumerate(vocab)}
 
 ### 5) Sentence encoding and padding
 
-Encoding: Sentences are converted into sequences of numerical IDs based on the vocabulary mapping. Unknown words are replaced with the placeholder ID.
-Padding: To ensure that all input sentences have a uniform length for the LSTM model, the sequences are padded or truncated to a predefined MAX_SEQ_LEN (125). Padding is done using the placeholder ID, ensuring consistent input dimensions.
+Sentences are converted into sequences of numerical IDs based on the vocabulary mapping. Unknown words are replaced with the placeholder ID. To ensure that all input sentences have a uniform length for the LSTM model, the sequences are padded or truncated to a predefined MAX_SEQ_LEN (125). Padding is done using the placeholder ID, ensuring consistent input dimensions.
 ```
 	# Function to encode sentences into integer sequences
 def encode_sentence(sentence):
@@ -201,7 +199,7 @@ print("Test shape:", x_test_padded.shape)
 ```
 ### 6) Label preparation
 
-Formatting: Labels for training and testing data are converted into NumPy arrays and reshaped into columns. This reshaping aligns the label format with the model's expected input structure.
+Labels for training and testing data are converted into NumPy arrays and reshaped into columns. This reshaping aligns the label format with the model's expected input structure.
 ```
 # Convert labels to numpy arrays and reshape them for model training
 y_train = np.array(y_train).reshape(-1, 1)
@@ -213,8 +211,7 @@ print("Test labels shape:", y_test.shape)
 
 ### 7) Embedding preparation
 
-Load Pretrained Model: The GloVe 200-dimensional embeddings are either downloaded or loaded from local storage. These embeddings provide pretrained vector representations for words, capturing semantic relationships.
-Embedding Matrix: An embedding matrix is created to map each word in the vocabulary to its GloVe vector. For words not in the GloVe model, the matrix is filled with zeros. This matrix serves as the weight for the embedding layer in the LSTM model.
+The GloVe 200-dimensional embeddings are either downloaded or loaded from local storage. These embeddings provide pretrained vector representations for words, capturing semantic relationships. An embedding matrix is created to map each word in the vocabulary to its GloVe vector. For words not in the GloVe model, the matrix is filled with zeros. This matrix serves as the weight for the embedding layer in the LSTM model.
 
 > [!NOTE]  
 > Initially the GloVe model was called for each run, but on subsequent code versions we cached it locally to increase speed.
@@ -246,16 +243,15 @@ print("Embedding matrix shape:", embedding_matrix.shape)
 ```
 
 ### 8) Model building and compilation
-
-LSTM Model Construction:
-  The model starts with an embedding layer initialized with the pretrained embeddings. The layer is frozen to prevent updates during training.
-  Two Bidirectional LSTM layers are added to capture contextual dependencies in both directions.
-  Dropout layers are included to reduce overfitting.
-  A dense output layer with a sigmoid activation function is used for binary sentiment classification.
-Compilation: The model is compiled using the Adam optimizer with a learning rate of 0.0001. Binary cross-entropy is chosen as the loss function, suitable for binary classification tasks. Accuracy is set as the evaluation metric.
+The model starts with an embedding layer initialized with the pretrained embeddings. The layer is frozen to prevent updates during training.
+- Two Bidirectional LSTM layers are added to capture contextual dependencies in both directions.
+- Dropout layers are included to reduce overfitting.
+- A dense output layer with a sigmoid activation function is used for binary sentiment classification.
+Lastly the model is compiled using the Adam optimizer with a learning rate of 0.0001. Binary cross-entropy is chosen as the loss function, suitable for binary classification tasks. Accuracy is set as the evaluation metric.
 
 > [!TIP]
->Hyperparameter tuning can greatly affect the model performance. The final methods and values selected below resulted from comparing the model accuracy and also considering the execution time each time.
+> Hyperparameter tuning can greatly affect the model performance. The final methods and values selected below resulted from comparing the model accuracy and also considering the execution time each time.
+
 
 ```
 # Clear any previous session to avoid memory issues
@@ -286,8 +282,10 @@ print("Model saved as 'lstm_model.keras'.")
 
 ### 9) Model training
 
-Data Shuffling: The training data is shuffled randomly to prevent overfitting and improve model generalization.
-Training: The model is trained on the shuffled data, with 20% reserved for validation. The training process uses a batch size of 50 and runs for 50 epochs. Validation metrics are tracked to monitor performance during training.
+The training data is shuffled randomly to prevent overfitting and improve model generalization. The model is trained on the shuffled data, with 20% reserved for validation. The training process uses a batch size of 50 and runs for 50 epochs. Validation metrics are tracked to monitor performance during training.
+
+
+
 ```
 # Shuffle the training data
 train_data, train_labels = shuffle(x_train_padded, y_train, random_state=42)
