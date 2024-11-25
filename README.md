@@ -53,6 +53,9 @@ Listed below is a list of the libraries/modules/packages used with a brief expla
 
 ```sklearn.utils.shuffle:``` Randomly shuffles data and labels to prevent patterns during training.
 
+> [!Important]
+> Ensure all required libraries, packages, or modules are installed in the active Python environment and are accessible by your system's PATH.
+
 
 ### 2) Data Collection & Preprocessing: 
 We imported the product reviews from multiple categories (books, electronics, DVDs). Cleaned the data by removing unwanted tags, URLs, emails, and special characters. Tokenized sentences and removed stopwords.
