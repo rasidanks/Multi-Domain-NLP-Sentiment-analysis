@@ -316,3 +316,9 @@ def lstm_predict(sentence: str):
     else:
         print('Error')
 ```
+
+# Conclusion
+We successfully demonstrated the fundamental tools of NLP and implemented a sentiment analysis tool using a Recurrent Neural Network, Bidirectional LongShortTermMemory model with a pretrained embedding layer(GloVe) to classify text reviews as positive or negative. After initial implementation was complete we tuned the model and adjusted the hyperparameters to achieve a ~95% accuracy. Further impovements can posibly be achieved by:
+- varying all the different hyper-parameters for the Recurrent Neural Network.
+- Using individual characters and one-shot encoding instead of tokenized words and the embeding layer.
+- Plenty more 
