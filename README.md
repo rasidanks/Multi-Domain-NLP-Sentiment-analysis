@@ -296,16 +296,15 @@ Prediction Function:
     The lstm_predict function allows real-time sentiment prediction for input sentences.
     Sentences are cleaned, encoded, and padded similarly to the training process.
     The LSTM model predicts a sentiment score, which is rounded to 0 (negative) or 1 (positive). The result is printed with an appropriate sentiment label.
-
+```
 def lstm_predict(sentence: str):
   
   #Predicts the sentiment of a given sentence using the trained LSTM model.
-  # Clean and encode the sentence
+  #Clean and encode the sentence
   cleaned_sentence = clean_sentence(sentence)
   encoded_sentence = encode_sentence(cleaned_sentence)
   padded_sentence = pad_sequences([encoded_sentence], maxlen=MAX_SEQ_LEN, dtype='int32', padding='post', truncating='post', value=dummy_id)
 
-```
     # Predict the sentiment (0 = Negative, 1 = Positive)
     prediction = round(lstm_model.predict(padded_sentence)[0][0])
     
